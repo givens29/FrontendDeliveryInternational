@@ -8,8 +8,8 @@ function registerUser(event) {
         fullName: form.elements.name.value,
         password: form.elements.password.value,
         email: form.elements.email.value,
-        address: form.elements.address.value,
-        birthDate: form.elements.birthDate.value,
+        addressId: form.elements.address.value,
+        birthDate: new Date(form.elements.birthDate.value).toISOString(),
         gender: form.elements.gender.value,
         phoneNumber: form.elements.phoneNumber.value,
     }
@@ -19,19 +19,18 @@ function registerUser(event) {
         headers: { "accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(user)
     })
-        .then(response => {
+        .then(async response => {
             if (!response.ok) {
-                alert(`${response.status} Registration failed! Status`);
-                throw new Error(`${response.status} Registration failed! Status`);
+                const errorText = await response.text();
+                console.error(`HTTP Error: ${response.status}, Message: ${errorText}`);
+                throw new Error(errorText);
             }
             return response.json();
         })
         .then(data => {
-            alert('Register successful');
-            console.log('Register successful');
+            console.log('Register successful:', data);
         })
         .catch(error => {
-            alert('Registration failed!');
-            console.error('Registration failed!');
-        })
+            console.error('Registration failed:', error.message || error);
+        });
 }

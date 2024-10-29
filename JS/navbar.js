@@ -1,24 +1,44 @@
 var access = localStorage.getItem("access_token");
 var logoutButton = document.getElementById('logout');
 
-fetch('https://food-delivery.kreosoft.ru/api/account/profile', {
-    method: 'GET',
-    headers: {
-        'Authorization': "Bearer " + localStorage.getItem("access_token"),
-        'Accept': 'application/json'
-    }
-})
-    .then(response => response.json())
-    .then(data => {
-        let userEmail = data.email;
-        let userEmailElement = document.getElementById('user-email');
-        userEmailElement.innerText = userEmail;
-        userEmailElement.addEventListener('click', () => {
-            window.location.href = 'profile.html';
-        });
-    })
-    .catch(error => console.error(error));
 if (access) {
+    fetch('https://food-delivery.kreosoft.ru/api/account/profile', {
+        method: 'GET',
+        headers: {
+            'Authorization': "Bearer " + localStorage.getItem("access_token"),
+            'Accept': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            let userEmail = data.email;
+            let userEmailElement = document.getElementById('user-email');
+            userEmailElement.innerText = userEmail;
+            userEmailElement.addEventListener('click', () => {
+                window.location.href = 'profile.html';
+            });
+        })
+        .catch(error => console.error(error));
+
+    let totalItem = 0;
+
+    fetch(`https://food-delivery.kreosoft.ru/api/basket`, {
+        method: 'GET',
+        headers: {
+            'accept': 'text/plain',
+            'Authorization': "Bearer " + localStorage.getItem("access_token")
+        }
+    })
+        .then(response => response.json())
+        .then(dish => {
+            dish.forEach((item, index) => {
+                totalItem++;
+            })
+            document.getElementById('cart-count').textContent = totalItem.toString();
+        })
+
+        .catch(error => console.error(error))
+
     document.getElementById('logout').addEventListener('click', function () {
         fetch('https://food-delivery.kreosoft.ru/api/account/logout', {
             method: 'POST',
@@ -65,23 +85,5 @@ document.querySelector('.btnNavbar').addEventListener('click', function () {
     navbar.classList.toggle('collapse');
 });
 
-let totalItem = 0;
-
-fetch(`https://food-delivery.kreosoft.ru/api/basket`, {
-    method: 'GET',
-    headers: {
-        'accept': 'text/plain',
-        'Authorization': "Bearer " + localStorage.getItem("access_token")
-    }
-})
-    .then(response => response.json())
-    .then(dish => {
-        dish.forEach((item, index) => {
-            totalItem++;
-        })
-        document.getElementById('cart-count').textContent = totalItem.toString();
-    })
-
-    .catch(error => console.error(error))
 
 
