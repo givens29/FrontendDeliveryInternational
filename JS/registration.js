@@ -21,6 +21,7 @@ function registerUser(event) {
     })
         .then(async response => {
             if (!response.ok) {
+                alert(`Registration failed: ${response.status}`);
                 const errorText = await response.text();
                 console.error(`HTTP Error: ${response.status}, Message: ${errorText}`);
                 throw new Error(errorText);
