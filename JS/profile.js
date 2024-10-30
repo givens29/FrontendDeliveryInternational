@@ -31,15 +31,12 @@ let editProfile = document.getElementById('editProfile');
 editProfile.addEventListener('click', function () {
     event.preventDefault();
     let name = document.getElementById('name');
-    let email = document.getElementById('email');
     let birthdate = document.getElementById('birthdate');
-    let gender = document.getElementById('gender');
     let address = document.getElementById('address');
     let phonenumber = document.getElementById('phone-number');
     let editProfile = {
         fullName: name.value,
         birthDate: birthdate.value,
-        gender: gender.value,
         address: address.value,
         phoneNumber: phonenumber.value
     }
@@ -58,6 +55,8 @@ editProfile.addEventListener('click', function () {
             }
             return;
         })
-        .then(data => { })
+        .then(data => {
+            console.log(data);
+        })
         .catch(error => console.error(error));
 });
