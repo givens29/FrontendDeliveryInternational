@@ -16,12 +16,20 @@ function loginUser(event) {
         headers: { "accept": "application/json", "Content-Type": "application/json" },
         body: JSON.stringify(user)
     })
-        .then(response => response.json())
+        .then(async response => {
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error(`HTTP Error: ${response.status}, Message: ${errorText}`);
+                throw new Error(errorText);
+            }
+            return response.json();
+        })
         .then(data => {
             localStorage.setItem('access_token', data.token);
             window.location.href = '/profile.html';
         })
         .catch(error => {
+            alert('Login failed', error.message)
             console.error('Login failed:', error);
         })
 }
