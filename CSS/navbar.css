@@ -1,0 +1,14 @@
+.num-items {
+    display: inline-block;
+    background-color: #0a9c05;
+    color: #ffffff;
+    font-size: 15px;
+    padding: 1px 8px;
+    border-radius: 10%;
+
+}
+
+.navbar-nav li.nav-item a.nav-link {
+    color: #333;
+    font-size: large;
+}
